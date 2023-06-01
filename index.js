@@ -1,3 +1,8 @@
+//npm install --to install dependency in server and client
+//npm start --to start client side project
+//nodemon index.js --to start server
+//node index.js --if nodemon index.js din't work
+
 const express = require('express')
 const cors = require('cors');
 require('dotenv').config();
@@ -79,6 +84,7 @@ async function run() {
       res.send(reviews);
     })
 
+    //get bookings
     app.get('/booking', verifyJWT, async (req, res) => {
       const patient = req.query.patient;
       const decodedEmail = req.decoded.email;
@@ -139,6 +145,7 @@ async function run() {
       res.send({ success: true, result });
     })
 
+    //update payment status after payment in booking
     app.patch('/booking/:id', verifyJWT, async (req, res) => {
       const id = req.params.id;
       const payment = req.body;
@@ -154,7 +161,8 @@ async function run() {
       res.send(updatedDoc);
     })
 
-    app.get('/booking/:id', verifyJWT, async (req, res) => {
+    //get specific idd booking
+      app.get('/booking/:id', verifyJWT, async (req, res) => {
       const id = req.params.id;
       const query = { _id: ObjectId(id) };
       const booking = await bookingCollection.findOne(query);
@@ -167,6 +175,7 @@ async function run() {
       res.send(users);
     })
 
+    //get admin
     app.get("/admin/:email", async (req, res) => {
       const email = req.params.email;
       const user = await userCollection.findOne({ email: email });
@@ -202,6 +211,8 @@ async function run() {
     //   const updatedBooking = await bookingCollection.updateOne(filter, updatedDoc);
     //   res.send(updatedDoc);
     // })
+    
+    //update appointment for treatment status
     app.put('/slot/true/:id', async (req, res) => {
       const id = req.params.id;
       const filter = { _id: ObjectId(id) };
